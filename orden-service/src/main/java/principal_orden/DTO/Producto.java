@@ -4,6 +4,6 @@ import lombok.Data;
 @Data
 public class Producto {
     private Long id;
-    private String name;
-    private Double price;
+    private String nombre;
+    private Double precio;
 }

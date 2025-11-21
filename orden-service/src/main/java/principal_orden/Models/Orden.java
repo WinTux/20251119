@@ -13,7 +13,7 @@ public class Orden {
     @Id
     @GeneratedValue
     private Long id;
-    private Long productId;
+    private Long productoId;
     private Integer quantity;
     private Double total;
 }
