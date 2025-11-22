@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <!-- Propiedades -->
+    <property name="LOG_PATH" value="logs" />
+    <property name="APP_NAME" value="my-springboot-app" />
+
+    <!-- Formato general del log -->
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
+
+    <!-- ========================== -->
+    <!-- Console Appender (con color) -->
+    <!-- ========================== -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                %clr(%d{HH:mm:ss.SSS}){faint}
+                %clr(%5p)
+                %clr(%logger{36}){cyan} -
+                %clr(%m){faint}%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- ========================== -->
+    <!-- File Appender con rotación diaria -->
+    <!-- ========================== -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${APP_NAME}.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Archivo rotado diario -->
+            <fileNamePattern>${LOG_PATH}/archive/${APP_NAME}.%d{yyyy-MM-dd}.gz</fileNamePattern>
+
+            <!-- Mantener 30 días -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ========================== -->
+    <!-- Niveles de log por paquete -->
+    <!-- ========================== -->
+
+    <!-- Logs de Spring -->
+    <logger name="org.springframework" level="INFO" />
+
+    <!-- Logs de Hibernate (si usas JPA) -->
+    <logger name="org.hibernate" level="WARN" />
+
+    <!-- Tu aplicación -->
+    <logger name="com.mycompany.myapp" level="DEBUG" />
+
+    <!-- ========================== -->
+    <!-- Root logger -->
+    <!-- ========================== -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>
