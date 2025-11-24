@@ -2,7 +2,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
     <!-- Esta siguiente linea tiene un fallback si no halla nombre de app -->
-    <property name="NOMBRE_APP" value="${spring.application.name:-orden-service}" />
+    <property name="NOMBRE_APP" value="${spring.application.name:-producto-service}" />
     <property name="ARCHIVO_LOG" value="logs/${NOMBRE_APP}.log"/>
     <appender name="ARCHIVO" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${ARCHIVO_LOG}</file>
