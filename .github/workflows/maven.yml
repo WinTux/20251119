@@ -37,7 +37,7 @@ jobs:
       - name: Checkout del código
         uses: actions/checkout@v4
       - name: Configurando el JDK 21
-        uses: actions/setup-java@4
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
