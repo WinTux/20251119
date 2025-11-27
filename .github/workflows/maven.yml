@@ -2,7 +2,11 @@ name: CI Microservicios
 on:
   push:
   pull_request:
-
+permissions:
+  contents: read
+  security-events: write
+  id-token: write
+  packages: write
 jobs:
   build-test-run:
     runs-on: ubuntu-latest
