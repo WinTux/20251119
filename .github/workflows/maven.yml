@@ -1,0 +1,80 @@
+name: CI Microservicios
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test-run:
+    runs-on: ubuntu-latest
+    services:
+      producto-db:
+        image: postgres:15
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: productos
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd="pg_isready -U ${{ secrets.DB_USERNAME }}"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=5
+      orden-db:
+        image: postgres:15
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: ordenes
+        ports:
+          - 5434:5432
+        options: >-
+          --health-cmd="pg_isready -U ${{ secrets.DB_USERNAME }}"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=5
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+      - name: Configurando el JDK 21
+        uses: actions/setup-java@4
+        with:
+          distribution: temurin
+          java-version: 21
+      # Compilar solo los módulos microservicios
+      - name: Compilar modulos sin tests
+        run: mvn -B -pl producto-service,orden-service -am clean package -DskipTests
+      # ---------------------------------
+      # Levantar producto-service
+      # ---------------------------------
+      - name: Instancia producto-service
+        env:
+          SPRING_DATASURCE_USERNAME: ${{ secrets.DB_USERNAME }}
+          SPRING_DATASURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          cd producto-service
+          nohup java -jar target/*.jar \
+          --server.port=8081 \
+          --spring.datasource.url=jdbc:postgresql://localhost:5433/productos \
+          > .. /logs/producto-service.log 2>&1 &
+      # ---------------------------------
+      # Levantar orden-service
+      # ---------------------------------
+      - name: Instancia orden-service
+        env:
+          SPRING_DATASURCE_USERNAME: ${{ secrets.DB_USERNAME }}
+          SPRING_DATASURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          cd orden-service
+          nohup java -jar target/*.jar \
+          --server.port=8082 \
+          --spring.datasource.url=jdbc:postgresql://localhost:5434/ordenes \
+          > .. /logs/orden-service.log 2>&1 &
+      - name: Esperar a que los servicios estén listos
+        run: sleep 25
+      - name: Ejecutar integration tests (multi-modulo)
+        env:
+          PRODUCT_SERVICE_URL: http://localhost:8081
+          ORDEN_SERVICE_URL: http://localhost:8082
+        run: mvn -B test -pl producto-service, orden-service
+        
