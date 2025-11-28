@@ -81,4 +81,19 @@ jobs:
           PRODUCT_SERVICE_URL: http://localhost:8081
           ORDEN_SERVICE_URL: http://localhost:8082
         run: mvn -B test -pl producto-service,orden-service
-        
+      # +++++++++++++++++++++++++++++++++++++++
+      # Seguridad sobre nuestro código (SAST + dependencias) -> Static Application Security Testing
+      # +++++++++++++++++++++++++++++++++++++++
+      - name: Instalar Snyk CLI
+        run: npm install -g snyk
+      - name: Escaneo de dependencias SnyK
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk test --all-projects --severity-threshold=medium
+      - name: Trivy Filesystem Scan (SAST + config)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          ingnore-unfixed: true
+          severity: 'HIGH,CRITICAL'
