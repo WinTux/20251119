@@ -115,3 +115,7 @@ jobs:
           conftest parse --parser dockerfile producto-service/Dockerfile
           echo "*** parseando orden-service ***"
           conftest parse --parser dockerfile orden-service/Dockerfile
+      - name: Verificación de políticas de seguridad (Dockerfiles)
+        run: |
+          conftest test --parser dockerfile producto-service/Dockerfile --output json
+          conftest test --parser dockerfile orden-service/Dockerfile --output json
