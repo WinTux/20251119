@@ -109,3 +109,9 @@ jobs:
       - name: Validar políticas
         run: |
           conftest verify --policy policy
+      - name: Salida de parser con debug de Dockerfile
+        run: |
+          echo "*** parseando producto-service ***"
+          conftest parse --parser dockerfile producto-service/Dockerfile
+          echo "*** parseando orden-service ***"
+          conftest parse --parser dockerfile orden-service/Dockerfile
