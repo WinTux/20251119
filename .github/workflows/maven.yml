@@ -106,3 +106,6 @@ jobs:
           | tar zx
           sudo mv conftest /usr/local/bin/
           conftest --version
+      - name: Validar políticas
+        run: |
+          conftest verify --policy policy
