@@ -1,6 +1,6 @@
 package docker.no_root
 
-3 No ejecutar como root
+# No ejecutar como root
 deny contains msg if {
   some i
   input[i].instruction == "USER"
