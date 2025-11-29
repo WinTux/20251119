@@ -1,9 +1,9 @@
-package docker.no_root
-
+package main
+import rego.v1
 # No ejecutar como root
 deny contains msg if {
   some i
-  input[i].instruction == "USER"
-  lower(input[i].value) == "root"
+  lower(input[0][i].Cmd) == "user"
+  lower(input[0][i].Value) == "root"
   msg := "No se permite ejecutar el contenedor como root (USER root)"
 }

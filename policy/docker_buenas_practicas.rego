@@ -1,10 +1,10 @@
-package docker.buenaspracticas
-
+package main
+import rego.v1
 # No utilizar tag latest
 deny contains msg if {
   some i
-  input[i].instruction == "FROM"
-  endswith(lower(input[i].value), ":latest")
+  lower(input[0][i].Cmd) == "from"
+  endswith(lower(input[0][i].Value), ":latest")
   msg := "No usar tag 'latest' en la sentencia FROM"
 }
 
@@ -15,5 +15,5 @@ deny contains msg if {
 }
 any_expose if {
   some i
-  input[i].instruction == "EXPOSE"
+  lower(input[0][i].Cmd) == "expose"
 }
