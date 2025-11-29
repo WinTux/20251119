@@ -45,6 +45,23 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
+      # ==============================================
+      # SBOM (Software Bill of Materials)
+      # ==============================================
+      - name: SBOM producto-service
+        uses: anchore/sbom-action@v0
+        with:
+          path: producto-service
+          format: json
+          output-file: producto-sbom.json
+          upload-artifact: true
+      - name: SBOM orden-service
+        uses: anchore/sbom-action@v0
+        with:
+          path: orden-service
+          format: json
+          output-file: orden-sbom.json
+          upload-artifact: true
       # Compilar solo los módulos microservicios
       - name: Compilar modulos sin tests
         run: mvn -B -pl producto-service,orden-service -am clean package -DskipTests
