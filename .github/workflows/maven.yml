@@ -52,14 +52,14 @@ jobs:
         uses: anchore/sbom-action@v0
         with:
           path: producto-service
-          format: json
+          format: cyclonedx-json
           output-file: producto-sbom.json
           upload-artifact: true
       - name: SBOM orden-service
         uses: anchore/sbom-action@v0
         with:
           path: orden-service
-          format: json
+          format: cyclonedx-json
           output-file: orden-sbom.json
           upload-artifact: true
       # Compilar solo los módulos microservicios
