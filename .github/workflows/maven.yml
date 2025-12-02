@@ -173,4 +173,24 @@ jobs:
         with:
           name: archivos-sarif
           path: "*.sarif"
-      
+      # +++++++++++++++++++++++++++++++++++
+      #  Escaneo de imagenes con Trivy (Vulnerabilidades de imagen)
+      # +++++++++++++++++++++++++++++++++++
+      - name: Build de imagenes docker
+        run: |
+          docker build -t producto-service-img producto-service
+          docker build -t orden-service-img orden-service
+      - name: Escaneo de imagenes con Trivy - producto-service
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: image
+          image-ref: 'producto-service-img'
+          severity: 'HIGH,CRITICAL'
+          ignore-unfixed: true
+      - name: Escaneo de imagenes con Trivy - orden-service
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: image
+          image-ref: 'orden-service-img'
+          severity: 'HIGH,CRITICAL'
+          ignore-unfixed: true
