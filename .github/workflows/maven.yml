@@ -136,3 +136,14 @@ jobs:
         run: |
           conftest test --parser dockerfile producto-service/Dockerfile --output json || true
           conftest test --parser dockerfile orden-service/Dockerfile --output json || true
+      # +++++++++++++++++++++++++++++++++++
+      #           SNYK con SBOM
+      # +++++++++++++++++++++++++++++++++++
+      - name: Scaneo Snyk SBOM producto-service
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk sbom test --file=producto-sbom.json
+      - name: Scaneo Snyk SBOM orden-service
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk sbom test --file=orden-sbom.json
