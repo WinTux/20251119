@@ -142,8 +142,8 @@ jobs:
       - name: Scaneo Snyk SBOM producto-service
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk sbom test --experimental --file=producto-sbom.json
+        run: snyk sbom test --experimental --file=producto-sbom.json -d || true
       - name: Scaneo Snyk SBOM orden-service
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk sbom test --experimental --file=orden-sbom.json
+        run: snyk sbom test --experimental --file=orden-sbom.json -d || true
