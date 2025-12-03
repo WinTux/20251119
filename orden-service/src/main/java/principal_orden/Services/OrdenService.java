@@ -1,5 +1,6 @@
 package principal_orden.Services;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class OrdenService {
     @Autowired
     private RestTemplate restTemplate;
     private static final Logger logger = LoggerFactory.getLogger(OrdenService.class);
+    @CircuitBreaker(name="productoServiceCircuitBreaker", fallbackMethod = "fallbackGetAproducto")
     public Orden realizarOrden(Orden order) {
 
         // Llamada al microservicio de productos
@@ -34,5 +36,14 @@ public class OrdenService {
         logger.debug("getAllOrdenes");
         logger.info("Retornando todas las ordenes");
         return ordenRepository.findAll();
+    }
+    public Orden fallbackGetAproducto(Orden o, Throwable throwable) {
+        System.out.println("FALLBACK GET A PRODUCTO");
+        logger.error("FALLBACK GET A PRODUCTO: "+throwable.getMessage());
+        Orden fallbackOrden =  new Orden();
+        fallbackOrden.setProductoId(o.getProductoId());
+        fallbackOrden.setQuantity(o.getQuantity());
+        fallbackOrden.setTotal(-1.0);
+        return fallbackOrden;
     }
 }
