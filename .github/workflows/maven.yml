@@ -206,3 +206,9 @@ jobs:
           scan-type: 'config'
           scan-ref: '.'
           severity: 'HIGH,CRITICAL'
+      - name: Verificar reglas Falco mediante docker
+        run: |
+          docker run --rm \
+          -v ${{ github.workspace }}/rules:/rules \
+          falcosecurity/falco:latest \
+          falco --list -r /rules/springboot-runtime.yaml
