@@ -200,3 +200,9 @@ jobs:
             echo "Vulnerabilidades detectadas en la imagen. Se provoca falla manual en el pipeline."
             exit 1
           fi || true
+      - name: Trivy Escaneo de config de IaC
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'config'
+          scan-ref: '.'
+          severity: 'HIGH,CRITICAL'
