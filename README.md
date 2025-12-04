@@ -26,6 +26,7 @@ system_cpu_usage
 ### Acerca de queries en: https://prometheus.io/docs/prometheus/latest/querying/
 
 ## Ejecutamos los microservicios usando un agente exteno con lo siguientes comandos
+Descargamos el agente del siguiente repositorio: https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases
 
 ```shell
 java -javaagent:/home/rusok/Documentos/DevOps/Microservicios/opentelemetry-javaagent.jar \
