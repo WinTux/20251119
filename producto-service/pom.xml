@@ -38,5 +38,10 @@
             <artifactId>logstash-logback-encoder</artifactId>
             <version>9.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.opentelemetry/opentelemetry-exporter-otlp -->
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-otlp</artifactId>
+        </dependency>
     </dependencies>
 </project>

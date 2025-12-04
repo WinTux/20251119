@@ -24,3 +24,25 @@ process_cpu_usage
 system_cpu_usage
 
 ### Acerca de queries en: https://prometheus.io/docs/prometheus/latest/querying/
+
+## Ejecutamos los microservicios usando un agente exteno con lo siguientes comandos
+
+```shell
+java -javaagent:/home/rusok/Documentos/DevOps/Microservicios/opentelemetry-javaagent.jar \
+-Dotel.exporter.otlp.endpoint=http://localhost:4317 \
+-Dotel.exporter.otlp.protocol=grpc \
+-Dotel.resource.attributes=service.name=producto-service \
+-Dotel.metrics.exporter=none \
+-Dotel.logs.exporter=none \
+-jar producto-service/target/producto-service-0.0.1-SNAPSHOT.jar
+```
+
+```shell
+java -javaagent:/home/rusok/Documentos/DevOps/Microservicios/opentelemetry-javaagent.jar \
+-Dotel.exporter.otlp.endpoint=http://localhost:4317 \
+-Dotel.exporter.otlp.protocol=grpc \
+-Dotel.resource.attributes=service.name=orden-service \
+-Dotel.metrics.exporter=none \
+-Dotel.logs.exporter=none \
+-jar orden-service/target/orden-service-0.0.1-SNAPSHOT.jar
+```
