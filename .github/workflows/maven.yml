@@ -260,3 +260,20 @@ jobs:
           task-definition: ecs/orden-task.json
           container-name: producto-service
           image: ${{ steps.login-ecr.outputs.registry }}/orden-service:${{ github.sha }}
+      # --------------------------------------------
+      #  Deploy a ECS
+      # --------------------------------------------
+      - name: Deploy proucto
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render-producto.outputs.task-definition }}
+          service: producto-service
+          cluster: dramatic-elephant-1s3cj0
+          wait-for-service-stability: true
+      - name: Deploy orden
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render-orden.outputs.task-definition }}
+          service: orden-service
+          cluster: dramatic-elephant-1s3cj0
+          wait-for-service-stability: true
