@@ -4,7 +4,7 @@
 - macro: container
   condition: container.id != host
 - macro: spawned_process
-  condition: ect.type in (execve, execveat)
+  condition: evt.type in (execve, execveat)
 # Lista de procesos permitidos
 - list: procesos_permitidos_springboot
   items:
