@@ -1,0 +1,21 @@
+{
+  "family": "orden-task",
+  "networkMode": "awsvpc",
+  "executionRoleArn": "arn:aws:iam::646640003372:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::646640003372:role/ecsTaskExecutionRole",
+  "containerDefinitiosn": [
+    {
+      "name": "orden-service",
+      "image": "646640003372.dkr.ecr.us-east-1.amazonaws.com/orden-service:latest",
+      "portMappings": [
+        { "containerPort": 8082 }
+      ],
+      "environment": [
+        {"name": "AWS_OTEL_ENABLED", "value": "true"}
+      ]
+    }
+  ],
+  "requiresCompatibilities": ["EC2"],
+  "cpu": "512",
+  "memory": "1024"
+}
