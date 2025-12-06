@@ -218,6 +218,9 @@ jobs:
           -v ${{ github.workspace }}/rules:/rules \
           falcosecurity/falco:latest \
           falco --dry-run -r /rules/springboot-runtime.yaml
+      # --------------------------------------------
+      #  Credenciales AWS
+      # --------------------------------------------
       - name: Configurar credenciales de AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -227,6 +230,9 @@ jobs:
       - name: Login a Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
+      # --------------------------------------------
+      #  PUSH a ECR
+      # --------------------------------------------
       - name: Subir producto-service a ECR
         run: |
           ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
@@ -237,3 +243,20 @@ jobs:
           ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG=${{ github.sha }}
           docker tag orden-service-img:latest $ECR_REGISTRY/orden-service:$IMAGE_TAG
+      # --------------------------------------------
+      #  Usando definiciones task
+      # --------------------------------------------
+      - name: Usando definiciones task producto-service
+        id: render-producto
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ecs/producto-task.json
+          container-name: producto-service
+          image: ${{ steps.login-ecr.outputs.registry }}/producto-service:${{ github.sha }}
+      - name: Usando definiciones task orden-service
+        id: render-orden
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ecs/orden-task.json
+          container-name: producto-service
+          image: ${{ steps.login-ecr.outputs.registry }}/orden-service:${{ github.sha }}
