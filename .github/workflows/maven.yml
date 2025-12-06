@@ -258,7 +258,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ecs/orden-task.json
-          container-name: producto-service
+          container-name: orden-service
           image: ${{ steps.login-ecr.outputs.registry }}/orden-service:${{ github.sha }}
       # --------------------------------------------
       #  Deploy a ECS
