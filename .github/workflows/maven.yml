@@ -238,11 +238,13 @@ jobs:
           ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG=${{ github.sha }}
           docker tag producto-service-img:latest $ECR_REGISTRY/producto-service:$IMAGE_TAG
+          docker push $ECR_REGISTRY/producto-service:$IMAGE_TAG
       - name: Subir orden-service a ECR
         run: |
           ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG=${{ github.sha }}
           docker tag orden-service-img:latest $ECR_REGISTRY/orden-service:$IMAGE_TAG
+          docker push $ECR_REGISTRY/orden-service:$IMAGE_TAG
       # --------------------------------------------
       #  Usando definiciones task
       # --------------------------------------------
