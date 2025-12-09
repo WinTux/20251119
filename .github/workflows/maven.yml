@@ -271,7 +271,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
-             | docker login --username AWS --password-stnin ${{ steps.login-ecr.outputs.registry }}
+             | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
             docker pull ${{ steps.login-ecr.outputs.registry }}/producto-service:${{ github.sha }}
             docker pull ${{ steps.login-ecr.outputs.registry }}/orden-service:${{ github.sha }}
             docker stop producto-service || true
