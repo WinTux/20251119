@@ -281,4 +281,4 @@ jobs:
             docker run -d --name producto-service -p 8081:8081 ${{ steps.login-ecr.outputs.registry }}/producto-service:${{ github.sha }}
             docker stop orden-service || true
             docker rm orden-service || true
-            docker run -d --name orden-service -p 8081:8081 ${{ steps.login-ecr.outputs.registry }}/orden-service:${{ github.sha }}
+            docker run -d --name orden-service -p 8082:8082 ${{ steps.login-ecr.outputs.registry }}/orden-service:${{ github.sha }}
